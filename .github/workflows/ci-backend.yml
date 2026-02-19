@@ -1,0 +1,11 @@
+on:
+  push:
+    branches:
+      - backend
+
+jobs:
+  build-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: cd backend && npm install && npm run build

@@ -1,0 +1,11 @@
+on:
+  push:
+    branches:
+      - frontend
+
+jobs:
+  build-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: cd frontend && npm install && npm run build
