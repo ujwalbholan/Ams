@@ -9,4 +9,9 @@ export class AppController {
   getHello(): string {
     return this.appService.getHello();
   }
+
+  @Get('/db')
+  async getTable() {
+    return this.appService.getTable('playing_with_neon');
+  }
 }
