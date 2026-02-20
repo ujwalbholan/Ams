@@ -9,15 +9,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.LoginModule = void 0;
 const common_1 = require("@nestjs/common");
 const login_controller_1 = require("./login.controller");
+const login_service_1 = require("./login.service");
+const token_module_1 = require("../tokens/token.module");
+const database_module_1 = require("../../database/database.module");
 let LoginModule = class LoginModule {
 };
 exports.LoginModule = LoginModule;
 exports.LoginModule = LoginModule = __decorate([
     (0, common_1.Module)({
-        imports: [],
-        providers: [],
+        imports: [token_module_1.TokenModule, database_module_1.DatabaseModule],
+        providers: [login_service_1.LoginService],
         controllers: [login_controller_1.LoginController],
-        exports: [],
     })
 ], LoginModule);
 //# sourceMappingURL=login.module.js.map
