@@ -8,24 +8,34 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RegisterController = void 0;
 const common_1 = require("@nestjs/common");
+const register_service_1 = require("./register.service");
+const register_dto_1 = require("./register.dto");
 let RegisterController = class RegisterController {
-    constructor() { }
-    getOk() {
-        return 'okk';
+    registerService;
+    constructor(registerService) {
+        this.registerService = registerService;
+    }
+    async register(dto) {
+        return await this.registerService.register(dto);
     }
 };
 exports.RegisterController = RegisterController;
 __decorate([
-    (0, common_1.Get)('/'),
+    (0, common_1.Post)('/register'),
+    (0, common_1.HttpCode)(common_1.HttpStatus.CREATED),
+    __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", String)
-], RegisterController.prototype, "getOk", null);
+    __metadata("design:paramtypes", [register_dto_1.RegisterDto]),
+    __metadata("design:returntype", Promise)
+], RegisterController.prototype, "register", null);
 exports.RegisterController = RegisterController = __decorate([
-    (0, common_1.Controller)('register'),
-    __metadata("design:paramtypes", [])
+    (0, common_1.Controller)('auth'),
+    __metadata("design:paramtypes", [register_service_1.RegisterService])
 ], RegisterController);
 //# sourceMappingURL=register.controller.js.map

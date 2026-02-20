@@ -6,20 +6,18 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.RegisterModlue = void 0;
+exports.TokenModule = void 0;
 const common_1 = require("@nestjs/common");
-const register_controller_1 = require("./register.controller");
-const register_service_1 = require("./register.service");
-const database_module_1 = require("../../database/database.module");
-const token_module_1 = require("../tokens/token.module");
-let RegisterModlue = class RegisterModlue {
+const jwt_1 = require("@nestjs/jwt");
+const token_service_1 = require("./token.service");
+let TokenModule = class TokenModule {
 };
-exports.RegisterModlue = RegisterModlue;
-exports.RegisterModlue = RegisterModlue = __decorate([
+exports.TokenModule = TokenModule;
+exports.TokenModule = TokenModule = __decorate([
     (0, common_1.Module)({
-        providers: [register_service_1.RegisterService],
-        imports: [database_module_1.DatabaseModule, token_module_1.TokenModule],
-        controllers: [register_controller_1.RegisterController],
+        providers: [token_service_1.TokenService],
+        imports: [jwt_1.JwtModule.register({})],
+        exports: [token_service_1.TokenService],
     })
-], RegisterModlue);
-//# sourceMappingURL=register.module.js.map
+], TokenModule);
+//# sourceMappingURL=token.module.js.map
