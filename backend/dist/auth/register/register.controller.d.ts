@@ -1,4 +1,7 @@
+import { RegisterService } from './register.service';
+import { RegisterDto } from './register.dto';
 export declare class RegisterController {
-    constructor();
-    getOk(): string;
+    private readonly registerService;
+    constructor(registerService: RegisterService);
+    register(dto: RegisterDto): Promise<any>;
 }
