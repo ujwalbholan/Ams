@@ -10,13 +10,19 @@ exports.TokenModule = void 0;
 const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
 const token_service_1 = require("./token.service");
+const jwt_config_1 = require("../../config/jwt.config");
 let TokenModule = class TokenModule {
 };
 exports.TokenModule = TokenModule;
 exports.TokenModule = TokenModule = __decorate([
     (0, common_1.Module)({
         providers: [token_service_1.TokenService],
-        imports: [jwt_1.JwtModule.register({})],
+        imports: [
+            jwt_1.JwtModule.register({
+                secret: jwt_config_1.jwtConfig.accessSecret,
+                signOptions: { expiresIn: jwt_config_1.jwtConfig.accessExpire },
+            }),
+        ],
         exports: [token_service_1.TokenService],
     })
 ], TokenModule);
