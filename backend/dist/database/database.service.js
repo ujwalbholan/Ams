@@ -20,10 +20,7 @@ let DatabaseService = class DatabaseService {
         this.sql = sql;
     }
     async query(query, params) {
-        return this.sql(query, params);
-    }
-    get instance() {
-        return this.sql;
+        return this.sql.query(query, params);
     }
 };
 exports.DatabaseService = DatabaseService;

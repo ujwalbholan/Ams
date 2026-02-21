@@ -22,20 +22,6 @@ let AppService = class AppService {
     getHello() {
         return 'Hello World!';
     }
-    async getTable(name) {
-        let tableName;
-        switch (name) {
-            case 'playing_with_neon':
-                tableName = 'playing_with_neon';
-                break;
-            case 'another_table':
-                tableName = 'another_table';
-                break;
-            default:
-                throw new Error('Invalid table name');
-        }
-        return await this.sql.query(`SELECT * FROM ${tableName}`);
-    }
 };
 exports.AppService = AppService;
 exports.AppService = AppService = __decorate([

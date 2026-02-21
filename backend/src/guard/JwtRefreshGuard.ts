@@ -1,8 +1,8 @@
 import {
-  Injectable,
   UnauthorizedException,
   CanActivate,
   ExecutionContext,
+  Injectable,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { JwtService } from '@nestjs/jwt';
@@ -10,6 +10,7 @@ import { TokenService } from 'src/auth/tokens/token.service';
 import { TokenHelper } from 'src/util/TokenUtils';
 import { DatabaseService } from 'src/database/database.service';
 
+@Injectable()
 export class JwtRefreshGuard implements CanActivate {
   private tokenHelper: TokenHelper;
   constructor(
@@ -23,8 +24,8 @@ export class JwtRefreshGuard implements CanActivate {
     const req: Request = context.switchToHttp().getRequest();
     const res: Response = context.switchToHttp().getResponse();
 
-    const accrssToken = req.header['authorization']?.split(' ')[1];
-    const refreshToken = req.cookies['refresh_token'];
+    const accrssToken = req.headers['authorization']?.split(' ')[1];
+    const refreshToken = req.cookies?.refresh_token;
 
     if (!accrssToken) {
       throw new UnauthorizedException('No access Token');
@@ -43,11 +44,10 @@ export class JwtRefreshGuard implements CanActivate {
         [refreshToken],
       );
 
-      if (result.length === 0) {
+      if (!result || result.length === 0) {
         throw new UnauthorizedException('Invalid refresh token');
       }
-
-      const user = result.rows[0];
+      const user = result[0];
 
       try {
         this.tokenHelper.validateRefreshToken(refreshToken);

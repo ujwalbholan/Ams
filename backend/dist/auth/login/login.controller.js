@@ -29,8 +29,8 @@ let LoginController = class LoginController {
         const user = await this.loginService.login(dto);
         res.cookie('refresh_token', user.token.refresh_token, {
             httpOnly: true,
-            secure: true,
-            sameSite: 'strict',
+            secure: false,
+            sameSite: 'lax',
             path: '/',
             maxAge: 7 * 24 * 60 * 60 * 1000,
         });
