@@ -11,18 +11,29 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LoginController = void 0;
 const common_1 = require("@nestjs/common");
 const login_dto_1 = require("./login.dto");
 const login_service_1 = require("./login.service");
+const express_1 = __importDefault(require("express"));
 let LoginController = class LoginController {
     loginService;
     constructor(loginService) {
         this.loginService = loginService;
     }
-    async login(dto) {
+    async login(dto, res) {
         const user = await this.loginService.login(dto);
+        res.cookie('refresh_token', user.token.refresh_token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'strict',
+            path: '/',
+            maxAge: 7 * 24 * 60 * 60 * 1000,
+        });
         return {
             message: 'User Login successfully',
             ...user,
@@ -34,8 +45,9 @@ __decorate([
     (0, common_1.Post)('/login'),
     (0, common_1.HttpCode)(common_1.HttpStatus.CREATED),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Res)({ passthrough: true })),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [login_dto_1.LoginDto]),
+    __metadata("design:paramtypes", [login_dto_1.LoginDto, Object]),
     __metadata("design:returntype", Promise)
 ], LoginController.prototype, "login", null);
 exports.LoginController = LoginController = __decorate([

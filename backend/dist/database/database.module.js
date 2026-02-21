@@ -10,6 +10,7 @@ exports.DatabaseModule = void 0;
 const dotenv_1 = require("dotenv");
 const common_1 = require("@nestjs/common");
 const serverless_1 = require("@neondatabase/serverless");
+const database_service_1 = require("./database.service");
 (0, dotenv_1.config)({
     path: ['.env'],
 });
@@ -23,8 +24,8 @@ let DatabaseModule = class DatabaseModule {
 exports.DatabaseModule = DatabaseModule;
 exports.DatabaseModule = DatabaseModule = __decorate([
     (0, common_1.Module)({
-        providers: [dbProvider],
-        exports: [dbProvider],
+        providers: [dbProvider, database_service_1.DatabaseService],
+        exports: [dbProvider, database_service_1.DatabaseService],
     })
 ], DatabaseModule);
 //# sourceMappingURL=database.module.js.map

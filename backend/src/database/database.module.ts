@@ -1,6 +1,7 @@
 import { config } from 'dotenv';
 import { Module } from '@nestjs/common';
 import { neon } from '@neondatabase/serverless';
+import { DatabaseService } from './database.service';
 
 config({
   path: ['.env'],
@@ -14,7 +15,7 @@ const dbProvider = {
 };
 
 @Module({
-  providers: [dbProvider],
-  exports: [dbProvider],
+  providers: [dbProvider, DatabaseService],
+  exports: [dbProvider, DatabaseService],
 })
 export class DatabaseModule {}

@@ -37,6 +37,6 @@ export class LoginService {
       user.id,
     ]);
 
-    return { email: user.email, access_token: token.access_token };
+    return { email: user.email, token: token };
   }
 }
