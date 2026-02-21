@@ -6,6 +6,9 @@ export declare class LoginService {
     constructor(sql: any, tokenService: TokenService);
     login(dto: LoginDto): Promise<{
         email: any;
-        access_token: string;
+        token: {
+            access_token: string;
+            refresh_token: string;
+        };
     }>;
 }

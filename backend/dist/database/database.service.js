@@ -12,21 +12,21 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AppService = void 0;
+exports.DatabaseService = void 0;
 const common_1 = require("@nestjs/common");
-let AppService = class AppService {
+let DatabaseService = class DatabaseService {
     sql;
     constructor(sql) {
         this.sql = sql;
     }
-    getHello() {
-        return 'Hello World!';
+    async query(query, params) {
+        return this.sql.query(query, params);
     }
 };
-exports.AppService = AppService;
-exports.AppService = AppService = __decorate([
+exports.DatabaseService = DatabaseService;
+exports.DatabaseService = DatabaseService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, common_1.Inject)('POSTGRES_POOL')),
     __metadata("design:paramtypes", [Object])
-], AppService);
-//# sourceMappingURL=app.service.js.map
+], DatabaseService);
+//# sourceMappingURL=database.service.js.map

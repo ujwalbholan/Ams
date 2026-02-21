@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Req } from '@nestjs/common';
 import { AppService } from './app.service';
 
 @Controller()
@@ -10,8 +10,10 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  @Get('/db')
-  async getTable() {
-    return this.appService.getTable('playing_with_neon');
-  }
+  // @Get('/debug')
+  // debug(@Req() req: Request) {
+  //   console.log(req.headers);
+  //   console.log(req.cookies);
+  //   return 'ok';
+  // }
 }
