@@ -8,7 +8,6 @@ import {
   Body,
   Query,
   UseGuards,
-  ParseIntPipe,
   Req,
 } from '@nestjs/common';
 import { ArtistsService } from './artists.service';
