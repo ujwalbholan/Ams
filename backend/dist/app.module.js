@@ -14,12 +14,19 @@ const database_module_1 = require("./database/database.module");
 const artists_module_1 = require("./artists/artists.module");
 const login_module_1 = require("./auth/login/login.module");
 const register_module_1 = require("./auth/register/register.module");
+const music_module_1 = require("./music/music.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [database_module_1.DatabaseModule, artists_module_1.ArtistsModule, login_module_1.LoginModule, register_module_1.RegisterModlue],
+        imports: [
+            database_module_1.DatabaseModule,
+            artists_module_1.ArtistsModule,
+            login_module_1.LoginModule,
+            register_module_1.RegisterModlue,
+            music_module_1.MusicModule,
+        ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],
     })
