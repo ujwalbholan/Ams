@@ -29,10 +29,7 @@ const hendelAxiosError = (error: unknown): ServiceError => {
   if (axios.isAxiosError(error)) {
     const axisoError = error as AxiosError<unknown>;
     return {
-      message:
-        axisoError.response?.data.message ||
-        axisoError.message ||
-        "something went wrong",
+      message: axisoError.message ?? "something went wrong",
       status: axisoError.response?.status,
     };
   }
