@@ -26,7 +26,7 @@ export interface ServiceError {
 }
 
 const hendelAxiosError = (error: unknown): ServiceError => {
-  if (new axios.AxiosError(error)) {
+  if (axios.AxiosError(error)) {
     const axisoError = error as AxiosError<unknown>;
     return {
       message:
