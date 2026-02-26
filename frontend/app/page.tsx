@@ -1,87 +1,211 @@
 "use client";
 
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  ArcElement,
+  Tooltip,
+  Legend,
+} from "chart.js";
+import { Bar, Doughnut } from "react-chartjs-2";
+import { Card, CardContent } from "@/components/ui/card";
+import { Users, Music, Disc3, Heart } from "lucide-react";
 
-export default function Home() {
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  ArcElement,
+  Tooltip,
+  Legend,
+);
+
+export default function DashboardHome() {
+  const stats = {
+    totalUsers: 120,
+    totalArtists: 35,
+    totalSongs: 410,
+    totalLikes: 9200,
+  };
+
+  const topBySongs = [
+    { name: "Drake", value: 32 },
+    { name: "Taylor Swift", value: 28 },
+    { name: "The Weeknd", value: 24 },
+  ];
+
+  const topByListeners = [
+    { name: "Taylor Swift", value: 950000 },
+    { name: "Drake", value: 870000 },
+    { name: "Ed Sheeran", value: 720000 },
+  ];
+
+  const topByLikes = [
+    { name: "Ariana Grande", value: 15000 },
+    { name: "Drake", value: 14000 },
+    { name: "The Weeknd", value: 12000 },
+  ];
+
+  const barData = {
+    labels: topBySongs.map((a) => a.name),
+    datasets: [
+      {
+        label: "Songs",
+        data: topBySongs.map((a) => a.value),
+        backgroundColor: "#6366f1",
+        borderRadius: 8,
+      },
+    ],
+  };
+
+  const doughnutData = {
+    labels: topByListeners.map((a) => a.name),
+    datasets: [
+      {
+        data: topByListeners.map((a) => a.value),
+        backgroundColor: ["#10b981", "#6366f1", "#f59e0b"],
+      },
+    ],
+  };
+
   return (
-    <div className="min-h-screen flex flex-col">
-      <header className="bg-white shadow-md sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto flex justify-between items-center py-4 px-6">
-          <h1 className="text-2xl font-bold text-indigo-600">AMS</h1>
-          <nav className="space-x-4">
-            <Link
-              href="#features"
-              className="text-gray-700 hover:text-indigo-600"
-            >
-              Features
-            </Link>
-            <Link href="#about" className="text-gray-700 hover:text-indigo-600">
-              About
-            </Link>
-            <Link href="/login">
-              <Button variant="outline">Login</Button>
-            </Link>
-          </nav>
-        </div>
-      </header>
-
-      <section className="max-w-350 m-auto my-40 flex-1 flex flex-col justify-center items-center text-center px-6">
-        <h2
-          className=" md:text-6xl mb-6 text-7xl text-center font-bold tracking-tight leading-tight max-w-xl bg-clip-text 
-          text-transparent bg-linear-to-b from-neutral-50 to-neutral-500 text-shadow-xs"
-        >
-          Welcome to Artist Management System
-        </h2>
-        <p className="text-gray-700 max-w-xl mb-8 text-lg">
-          Manage your artists and their songs effortlessly. CRUD operations, CSV
-          import/export, and a beautiful dashboard — all in one place.
+    <div className="space-y-8">
+      <div>
+        <h1 className="text-3xl font-bold">Music Analytics Dashboard</h1>
+        <p className="text-gray-500 dark:text-gray-400">
+          Insights and performance overview of your artists.
         </p>
-        <div className="flex gap-4">
-          <Link href="/register">
-            <Button>Get Started</Button>
-          </Link>
-          <Link href="/login">
-            <Button variant="outline">Login</Button>
-          </Link>
-        </div>
-      </section>
+      </div>
 
-      <section id="features" className="py-20 bg-white">
-        <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-10 text-center">
-          <div className="p-6 border rounded-lg shadow hover:shadow-lg transition">
-            <h3 className="text-xl font-bold mb-2">User Management</h3>
-            <p className="text-gray-600">
-              Create, update, and delete users with ease.
-            </p>
-          </div>
-          <div className="p-6 border rounded-lg shadow hover:shadow-lg transition">
-            <h3 className="text-xl font-bold mb-2">Artist & Songs</h3>
-            <p className="text-gray-600">
-              Manage artists, songs, and CSV imports seamlessly.
-            </p>
-          </div>
-          <div className="p-6 border rounded-lg shadow hover:shadow-lg transition">
-            <h3 className="text-xl font-bold mb-2">Secure Dashboard</h3>
-            <p className="text-gray-600">
-              Protected admin dashboard with JWT authentication.
-            </p>
-          </div>
-        </div>
-      </section>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 auto-rows-[180px]">
+        <Card className="shadow-md">
+          <CardContent className="p-6 flex justify-between items-center h-full">
+            <div>
+              <p className="text-gray-500 text-sm">Total Users</p>
+              <h2 className="text-3xl font-bold">{stats.totalUsers}</h2>
+            </div>
+            <Users className="text-indigo-500" size={28} />
+          </CardContent>
+        </Card>
 
-      <section id="about" className="py-20 bg-indigo-50 text-center px-6">
-        <h3 className="text-3xl font-bold text-indigo-700 mb-4">About AMS</h3>
-        <p className="text-gray-700 max-w-2xl mx-auto text-lg">
-          AMS is built to simplify artist management. From adding new artists,
-          managing their songs, to exporting/importing CSV files — everything is
-          organized in one beautiful interface.
-        </p>
-      </section>
+        <Card className="shadow-md">
+          <CardContent className="p-6 flex justify-between items-center h-full">
+            <div>
+              <p className="text-gray-500 text-sm">Total Artists</p>
+              <h2 className="text-3xl font-bold">{stats.totalArtists}</h2>
+            </div>
+            <Music className="text-green-500" size={28} />
+          </CardContent>
+        </Card>
 
-      <footer className="bg-white shadow-inner py-6 mt-auto text-center text-gray-600">
-        &copy; {new Date().getFullYear()} AMS. All rights reserved.
-      </footer>
+        <Card className="shadow-md">
+          <CardContent className="p-6 flex justify-between items-center h-full">
+            <div>
+              <p className="text-gray-500 text-sm">Total Songs</p>
+              <h2 className="text-3xl font-bold">{stats.totalSongs}</h2>
+            </div>
+            <Disc3 className="text-pink-500" size={28} />
+          </CardContent>
+        </Card>
+
+        <Card className="shadow-md">
+          <CardContent className="p-6 flex justify-between items-center h-full">
+            <div>
+              <p className="text-gray-500 text-sm">Total Likes</p>
+              <h2 className="text-3xl font-bold">{stats.totalLikes}</h2>
+            </div>
+            <Heart className="text-red-500" size={28} />
+          </CardContent>
+        </Card>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <Card className="shadow-md">
+          <CardContent className="p-6">
+            <h3 className="font-semibold mb-4 text-lg">
+              Top Artists by Song Count
+            </h3>
+            <div className="h-64 sm:h-80">
+              <Bar data={barData} options={{ responsive: true }} />
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="shadow-md">
+          <CardContent className="p-6 flex flex-col">
+            <h3 className="font-semibold mb-6 text-lg">
+              Top Artists by Listeners
+            </h3>
+
+            <div className="flex flex-col sm:flex-row items-center gap-6">
+              <div className="w-full sm:w-1/2 flex justify-center">
+                <div className="w-64 h-64 sm:w-72 sm:h-72">
+                  <Doughnut
+                    data={doughnutData}
+                    options={{
+                      maintainAspectRatio: false,
+                      cutout: "65%",
+                      plugins: { legend: { display: false } },
+                    }}
+                  />
+                </div>
+              </div>
+
+              <div className="flex-1 space-y-3 w-full sm:w-auto">
+                {topByListeners.map((artist, index) => {
+                  const colors = ["#10b981", "#6366f1", "#f59e0b"];
+                  return (
+                    <div
+                      key={index}
+                      className="flex items-center justify-between"
+                    >
+                      <div className="flex items-center gap-3">
+                        <span
+                          className="w-3 h-3 rounded-full"
+                          style={{ backgroundColor: colors[index] }}
+                        />
+                        <span className="font-medium">{artist.name}</span>
+                      </div>
+                      <span className="text-gray-500">
+                        {(artist.value / 1000).toFixed(0)}k
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      <Card className="shadow-md overflow-x-auto">
+        <CardContent className="p-6">
+          <h3 className="font-semibold mb-4 text-lg">Top Artists by Likes</h3>
+          <table className="w-full min-w-100">
+            <thead className="bg-gray-100">
+              <tr>
+                <th className="text-left p-3">Artist</th>
+                <th className="text-left p-3">Likes</th>
+              </tr>
+            </thead>
+            <tbody>
+              {topByLikes.map((artist, index) => (
+                <tr
+                  key={index}
+                  className="border-t hover:bg-gray-50 transition"
+                >
+                  <td className="p-3">{artist.name}</td>
+                  <td className="p-3 font-medium">
+                    {artist.value.toLocaleString()}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </CardContent>
+      </Card>
     </div>
   );
 }
