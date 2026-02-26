@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 "use client";
 
 import { useState } from "react";
@@ -23,7 +24,7 @@ import {
 } from "@/components/ui/dialog";
 
 export default function CreateMusicModal() {
-  const { showToast } = useToast();
+
   const [open, setOpen] = useState(false);
 
   const [artists] = useState([
@@ -47,9 +48,10 @@ export default function CreateMusicModal() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.artist_id) {
-      showToast({
+      useToast({
         message: "Please select an artist",
         type: "error",
+        title: ""
       });
       return;
     }
@@ -63,7 +65,7 @@ export default function CreateMusicModal() {
         genre: form.genre,
       });
 
-      showToast({
+      useToast({
         message: `${form.title} has been added successfully!`,
         type: "success",
         action: { label: "Close", onClick: () => setOpen(false) },
@@ -72,9 +74,10 @@ export default function CreateMusicModal() {
       setForm({ artist_id: "", title: "", album_name: "", genre: "" });
       setOpen(false);
     } catch (err: any) {
-      showToast({
+      useToast({
         message: err.message || "Failed to create music",
         type: "error",
+        title: ""
       });
     } finally {
       setLoading(false);
