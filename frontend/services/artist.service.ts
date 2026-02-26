@@ -4,7 +4,7 @@ import { AxiosError } from "axios";
 export interface ArtistPayload {
   name: string;
   dob: string;
-  gender: "m" | "f" | "o";
+  gender: "m" | "f" ;
   address: string;
   first_release_year: number;
   no_of_albums_released: number;
@@ -14,7 +14,7 @@ export interface Artist {
   id: number;
   name: string;
   dob: string;
-  gender: "m" | "f" | "o";
+  gender: "m" | "f" ;
   address: string;
   first_release_year: number;
   no_of_albums_released: number;
