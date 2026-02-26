@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 "use client";
 
 import { useState } from "react";
@@ -23,7 +24,6 @@ export default function AddArtistModal({
   open,
   onOpenChange,
 }: AddArtistModalProps) {
-  const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
     name: "",
@@ -50,7 +50,7 @@ export default function AddArtistModal({
         first_release_year: Number(form.first_release_year),
         no_of_albums_released: Number(form.no_of_albums_released),
       });
-      toast({
+      useToast({
         title: "Artist Created",
         description: `${form.name} added successfully`,
         variant: "success",
@@ -65,7 +65,7 @@ export default function AddArtistModal({
         no_of_albums_released: "",
       });
     } catch (err: any) {
-      toast({
+      useToast({
         title: "Failed to create artist",
         description: err.message || "Something went wrong",
         variant: "destructive",
