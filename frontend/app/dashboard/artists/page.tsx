@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { artistService, Artist } from "@/services/artist.service";
+import { artistService, Artist, ArtistPayload } from "@/services/artist.service";
 import {
   Table,
   TableBody,
@@ -12,13 +12,14 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/toast";
-import { Trash2 } from "lucide-react";
+import { Trash2, Edit } from "lucide-react";
 import AddArtistModal from "./(components)/AddArtistModal";
 
 export default function ArtistsPage() {
   const [artists, setArtists] = useState<Artist[]>([]);
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedArtist, setSelectedArtist] = useState<Artist | null>(null);
   const { showToast } = useToast();
 
   const fetchArtists = async () => {
@@ -55,18 +56,38 @@ export default function ArtistsPage() {
     }
   };
 
+  const handleEdit = (artist: Artist) => {
+    setSelectedArtist(artist);
+    setIsModalOpen(true);
+  };
+
+  const handleUpdate = (id: number, data: Partial<ArtistPayload>) => {
+    setArtists((prev) =>
+      prev.map((a) => (a.id === id ? { ...a, ...data } : a)),
+    );
+  };
+
   useEffect(() => {
     if (!isModalOpen) fetchArtists();
   }, [isModalOpen]);
 
   return (
-    <div className="p-4 md:p-8">
+    <div className="p-4 md:p-5">
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold">Artists</h1>
         <Button onClick={() => setIsModalOpen(true)}>Add Artist</Button>
       </div>
 
-      <AddArtistModal open={isModalOpen} onOpenChange={setIsModalOpen} />
+      {/* <AddArtistModal open={isModalOpen} onOpenChange={setIsModalOpen} /> */}
+      <AddArtistModal
+        open={isModalOpen}
+        onOpenChange={(open) => {
+          setIsModalOpen(open);
+          if (!open) setSelectedArtist(null);
+        }}
+        artistToEdit={selectedArtist}
+        onUpdate={handleUpdate}
+      />
 
       <div className="overflow-x-auto">
         <Table>
@@ -91,6 +112,14 @@ export default function ArtistsPage() {
                 <TableCell>{artist.first_release_year}</TableCell>
                 <TableCell>{artist.no_of_albums_released}</TableCell>
                 <TableCell>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleEdit(artist)}
+                    className="mr-2"
+                  >
+                    <Edit size={20} />
+                  </Button>
                   <Button
                     variant="destructive"
                     size="sm"

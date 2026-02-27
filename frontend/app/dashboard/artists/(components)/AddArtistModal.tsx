@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { artistService } from "@/services/artist.service";
+import { useState, useEffect } from "react";
+import { Artist, artistService } from "@/services/artist.service";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -26,11 +26,15 @@ type ArtistForm = {
 interface AddArtistModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  artistToEdit?: Artist | null;
+  onUpdate?: (id: number, data: Partial<ArtistForm>) => void;
 }
 
 export default function AddArtistModal({
   open,
   onOpenChange,
+  artistToEdit = null,
+  onUpdate,
 }: AddArtistModalProps) {
   const [loading, setLoading] = useState(false);
 
@@ -44,29 +48,17 @@ export default function AddArtistModal({
   });
   const { showToast } = useToast();
 
-  const handleChange = <K extends keyof ArtistForm>(
-    field: K,
-    value: ArtistForm[K],
-  ) => {
-    setForm((prev) => ({ ...prev, [field]: value }));
-  };
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      await artistService.createArtist({
-        name: form.name,
-        dob: form.dob,
-        gender: form.gender,
-        address: form.address,
-        first_release_year: Number(form.first_release_year),
-        no_of_albums_released: Number(form.no_of_albums_released),
+  useEffect(() => {
+    if (artistToEdit) {
+      setForm({
+        name: artistToEdit.name,
+        dob: artistToEdit.dob,
+        gender: artistToEdit.gender,
+        address: artistToEdit.address,
+        first_release_year: String(artistToEdit.first_release_year),
+        no_of_albums_released: String(artistToEdit.no_of_albums_released),
       });
-      showToast({
-        message: "Artist Created",
-        type: "success",
-      });
-      onOpenChange(false);
+    } else {
       setForm({
         name: "",
         dob: "",
@@ -75,9 +67,50 @@ export default function AddArtistModal({
         first_release_year: "",
         no_of_albums_released: "",
       });
+    }
+  }, [artistToEdit, open]);
+
+  const handleChange = <K extends keyof ArtistForm>(
+    field: K,
+    value: ArtistForm[K],
+  ) => {
+    setForm((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      if (artistToEdit && onUpdate) {
+        await artistService.updateArtist(artistToEdit.id, {
+          name: form.name,
+          dob: form.dob,
+          gender: form.gender,
+          address: form.address,
+          first_release_year: Number(form.first_release_year),
+          no_of_albums_released: Number(form.no_of_albums_released),
+        });
+        showToast({ message: "Artist Updated", type: "success" });
+        onUpdate(artistToEdit.id, form);
+      } else {
+        await artistService.createArtist({
+          name: form.name,
+          dob: form.dob,
+          gender: form.gender,
+          address: form.address,
+          first_release_year: Number(form.first_release_year),
+          no_of_albums_released: Number(form.no_of_albums_released),
+        });
+        showToast({ message: "Artist Created", type: "success" });
+      }
+
+      onOpenChange(false);
     } catch (err: any) {
       showToast({
-        message: "Failed to create artist",
+        message: artistToEdit
+          ? "Failed to update artist"
+          : "Failed to create artist",
         type: "error",
       });
     } finally {
@@ -162,7 +195,13 @@ export default function AddArtistModal({
           </div>
 
           <Button type="submit" className="mt-2 w-full" disabled={loading}>
-            {loading ? "Creating..." : "Create Artist"}
+            {loading
+              ? artistToEdit
+                ? "Updating..."
+                : "Creating..."
+              : artistToEdit
+                ? "Update Artist"
+                : "Create Artist"}
           </Button>
         </form>
       </DialogContent>
