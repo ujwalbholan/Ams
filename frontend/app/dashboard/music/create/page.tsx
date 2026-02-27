@@ -24,8 +24,8 @@ import {
 } from "@/components/ui/dialog";
 
 export default function CreateMusicModal() {
-
   const [open, setOpen] = useState(false);
+  const { showToast } = useState();
 
   const [artists] = useState([
     { id: 1, name: "Drake" },
@@ -48,10 +48,9 @@ export default function CreateMusicModal() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.artist_id) {
-      useToast({
+      showToast({
         message: "Please select an artist",
         type: "error",
-        title: ""
       });
       return;
     }
@@ -65,19 +64,17 @@ export default function CreateMusicModal() {
         genre: form.genre,
       });
 
-      useToast({
+      showToast({
         message: `${form.title} has been added successfully!`,
         type: "success",
-        title: ""
       });
 
       setForm({ artist_id: "", title: "", album_name: "", genre: "" });
       setOpen(false);
     } catch (err: any) {
-      useToast({
+      showToast({
         message: err.message || "Failed to create music",
         type: "error",
-        title: ""
       });
     } finally {
       setLoading(false);
