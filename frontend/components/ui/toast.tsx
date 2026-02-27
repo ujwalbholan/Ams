@@ -23,10 +23,11 @@ let toastId = 0;
 
 export function useToast(p0: { title: string; message: any; type: string; }) {
   const context = useContext(ToastContext);
-  if (!context) throw new Error("useToast must be used within ToastProvider");
+  if (!context) {
+    throw new Error("useToast must be used within ToastProvider");
+  }
   return context;
 }
-
 export function ToastProvider({ children }: { children: ReactNode }) {
   const [toasts, setToasts] = useState<Toast[]>([]);
 
