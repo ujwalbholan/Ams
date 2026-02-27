@@ -27,8 +27,9 @@ let ArtistsController = class ArtistsController {
     constructor(artistsService) {
         this.artistsService = artistsService;
     }
-    getAllArtist(page = 1, limit = 10) {
-        return this.artistsService.getAllArtist(Number(page), Number(limit));
+    getAllArtist(page = 1, limit = 10, req) {
+        const id = req['user'].sub;
+        return this.artistsService.getAllArtist(id, Number(page), Number(limit));
     }
     createArtist(CreateArtistDto, req) {
         const userId = req['user'].sub;
@@ -53,8 +54,9 @@ __decorate([
     (0, common_1.Get)(''),
     __param(0, (0, common_1.Query)('page')),
     __param(1, (0, common_1.Query)('limit')),
+    __param(2, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:paramtypes", [Object, Object, Object]),
     __metadata("design:returntype", void 0)
 ], ArtistsController.prototype, "getAllArtist", null);
 __decorate([
