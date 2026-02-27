@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { artistService, Artist, ArtistPayload } from "@/services/artist.service";
+import { artistService, Artist } from "@/services/artist.service";
 import {
   Table,
   TableBody,
@@ -20,13 +20,19 @@ export default function ArtistsPage() {
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedArtist, setSelectedArtist] = useState<Artist | null>(null);
+  const [page, setPage] = useState(1);
+  const [limit] = useState(10);
+  const [total, setTotal] = useState(0);
   const { showToast } = useToast();
 
-  const fetchArtists = async () => {
+  const fetchArtists = async (pageNumber: number = 1) => {
     setLoading(true);
     try {
-      const res = await artistService.getArtists(1, 10);
+      const res = await artistService.getArtists(pageNumber, limit);
       setArtists(res.data);
+      console.log(res.page);
+      setPage(res.page);
+      setTotal(res.total);
     } catch (err: any) {
       showToast({
         message: err.message || "Something went wrong",
@@ -66,11 +72,10 @@ export default function ArtistsPage() {
       prev.map((a) => (a.id === id ? { ...a, ...data } : a)),
     );
   };
-  
 
   useEffect(() => {
-    if (!isModalOpen) fetchArtists();
-  }, [isModalOpen]);
+    if (!isModalOpen) fetchArtists(page);
+  }, [page, isModalOpen]);
 
   return (
     <div className="p-4 md:p-5">
@@ -133,6 +138,21 @@ export default function ArtistsPage() {
             ))}
           </TableBody>
         </Table>
+
+        <div className="flex items-center justify-end mt-4 space-x-4">
+          <Button onClick={() => setPage(page - 1)} disabled={page <= 1}>
+            Previous
+          </Button>
+          <span>
+            Page {page} of {Math.max(1, Math.ceil(total / limit))}
+          </span>
+          <Button
+            onClick={() => setPage(page + 1)}
+            disabled={page >= Math.max(1, Math.ceil(total / limit))}
+          >
+            Next
+          </Button>
+        </div>
       </div>
 
       {loading && <p className="mt-4 text-gray-500">Loading artists...</p>}
