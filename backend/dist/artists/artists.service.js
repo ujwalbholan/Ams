@@ -17,15 +17,17 @@ let ArtistsService = class ArtistsService {
     constructor(databaseService) {
         this.databaseService = databaseService;
     }
-    async getAllArtist(page, limit) {
+    async getAllArtist(id, page, limit) {
         const offset = (page - 1) * limit;
         try {
             const data = await this.databaseService.query(`SELECT * FROM artists
+       WHERE id = $1
        ORDER BY id DESC
-       LIMIT $1 OFFSET $2`, [limit, offset]);
-            const result = await this.databaseService.query(`SELECT COUNT(*) FROM artists`);
+       LIMIT $2 OFFSET $3`, [id, limit, offset]);
+            const result = await this.databaseService.query(`SELECT COUNT(*) FROM artists
+       WHERE id = $1`, [id]);
             if (!result?.length) {
-                throw new common_1.NotFoundException('Artist creation faild');
+                throw new common_1.NotFoundException('Artist creation failed');
             }
             return {
                 total: Number(result[0].count),
@@ -35,6 +37,7 @@ let ArtistsService = class ArtistsService {
             };
         }
         catch (error) {
+            console.log(error);
             if (error instanceof common_1.NotFoundException)
                 throw error;
             throw new common_1.InternalServerErrorException();

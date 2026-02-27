@@ -42,6 +42,11 @@ const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const express = __importStar(require("express"));
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
+    app.enableCors({
+        origin: 'http://localhost:3000',
+        methods: 'GET,HEAD,PUT,PATCH,POST,DELET,E,OPTIONS',
+        credentials: true,
+    });
     app.use((0, cookie_parser_1.default)());
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));

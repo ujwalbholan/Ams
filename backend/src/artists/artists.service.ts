@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import {
   Injectable,
   NotFoundException,
@@ -11,23 +14,26 @@ import { UpdateArtistDto } from './dto/artist.update.dto';
 export class ArtistsService {
   constructor(private readonly databaseService: DatabaseService) {}
 
-  async getAllArtist(page, limit) {
+  async getAllArtist(id, page, limit) {
     const offset = (page - 1) * limit;
 
     try {
       const data = await this.databaseService.query(
         `SELECT * FROM artists
+       WHERE id = $1
        ORDER BY id DESC
-       LIMIT $1 OFFSET $2`,
-        [limit, offset],
+       LIMIT $2 OFFSET $3`,
+        [id, limit, offset],
       );
 
       const result = await this.databaseService.query(
-        `SELECT COUNT(*) FROM artists`,
+        `SELECT COUNT(*) FROM artists
+       WHERE id = $1`,
+        [id],
       );
 
       if (!result?.length) {
-        throw new NotFoundException('Artist creation faild');
+        throw new NotFoundException('Artist creation failed');
       }
 
       return {
@@ -37,6 +43,7 @@ export class ArtistsService {
         data,
       };
     } catch (error) {
+      console.log(error);
       if (error instanceof NotFoundException) throw error;
       throw new InternalServerErrorException();
     }

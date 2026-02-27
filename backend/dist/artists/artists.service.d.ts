@@ -4,7 +4,7 @@ import { UpdateArtistDto } from './dto/artist.update.dto';
 export declare class ArtistsService {
     private readonly databaseService;
     constructor(databaseService: DatabaseService);
-    getAllArtist(page: any, limit: any): Promise<{
+    getAllArtist(id: any, page: any, limit: any): Promise<{
         total: number;
         page: any;
         limit: any;

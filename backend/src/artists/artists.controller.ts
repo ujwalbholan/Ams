@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import {
   Controller,
   Get,
@@ -22,8 +25,13 @@ export class ArtistsController {
   constructor(private readonly artistsService: ArtistsService) {}
 
   @Get('')
-  getAllArtist(@Query('page') page = 1, @Query('limit') limit = 10) {
-    return this.artistsService.getAllArtist(Number(page), Number(limit));
+  getAllArtist(
+    @Query('page') page = 1,
+    @Query('limit') limit = 10,
+    @Req() req: Request,
+  ) {
+    const id = req['user'].sub;
+    return this.artistsService.getAllArtist(id, Number(page), Number(limit));
   }
 
   @Post('')
@@ -33,14 +41,14 @@ export class ArtistsController {
   }
 
   @Get(':id')
-  getArtistById(@Param('id') id: Number, @Req() req: Request) {
+  getArtistById(@Param('id') id: number, @Req() req: Request) {
     const userId = req['user'].sub;
     return this.artistsService.getArtistById(Number(id), userId);
   }
 
   @Put(':id')
   updateArtist(
-    @Param('id') id: Number,
+    @Param('id') id: number,
     @Req() req: Request,
     @Body() updateArtistDto: UpdateArtistDto,
   ) {
