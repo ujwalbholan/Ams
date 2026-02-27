@@ -21,11 +21,13 @@ const ToastContext = createContext<ToastContextProps | undefined>(undefined);
 
 let toastId = 0;
 
-export function useToast(p0: { title: string; message: any; type: string; }) {
+export function useToast() {
   const context = useContext(ToastContext);
+
   if (!context) {
     throw new Error("useToast must be used within ToastProvider");
   }
+
   return context;
 }
 export function ToastProvider({ children }: { children: ReactNode }) {
@@ -35,7 +37,6 @@ export function ToastProvider({ children }: { children: ReactNode }) {
     const id = toastId++;
     setToasts((prev) => [...prev, { ...toast, id }]);
 
-    // Auto-dismiss after 4s
     setTimeout(() => {
       setToasts((prev) => prev.filter((t) => t.id !== id));
     }, 4000);
@@ -49,7 +50,6 @@ export function ToastProvider({ children }: { children: ReactNode }) {
     <ToastContext.Provider value={{ showToast }}>
       {children}
 
-      {/* Toast container */}
       <div className="fixed top-5 right-5 z-50 flex flex-col gap-3">
         {toasts.map((toast) => (
           <div

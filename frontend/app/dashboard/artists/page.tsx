@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable react-hooks/rules-of-hooks */
 "use client";
 
 import { useEffect, useState } from "react";
@@ -21,6 +19,7 @@ export default function ArtistsPage() {
   const [artists, setArtists] = useState<Artist[]>([]);
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { showToast } = useToast();
 
   const fetchArtists = async () => {
     setLoading(true);
@@ -28,8 +27,7 @@ export default function ArtistsPage() {
       const res = await artistService.getArtists(1, 10);
       setArtists(res.data);
     } catch (err: any) {
-      useToast({
-        title: "Error fetching artists",
+      showToast({
         message: err.message || "Something went wrong",
         type: "error",
       });
@@ -45,14 +43,12 @@ export default function ArtistsPage() {
     try {
       await artistService.deleteArtist(id);
       setArtists((prev) => prev.filter((a) => a.id !== id));
-      useToast({
-        title: "Artist deleted",
+      showToast({
         message: "Artist has been removed successfully",
         type: "success",
       });
     } catch (err: any) {
-      useToast({
-        title: "Failed to delete artist",
+      showToast({
         message: err.message || "Something went wrong",
         type: "error",
       });
@@ -60,8 +56,8 @@ export default function ArtistsPage() {
   };
 
   useEffect(() => {
-    fetchArtists();
-  }, []);
+    if (!isModalOpen) fetchArtists();
+  }, [isModalOpen]);
 
   return (
     <div className="p-4 md:p-8">
