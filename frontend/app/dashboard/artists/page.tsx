@@ -61,11 +61,12 @@ export default function ArtistsPage() {
     setIsModalOpen(true);
   };
 
-  const handleUpdate = (id: number, data: Partial<ArtistPayload>) => {
+  const handleUpdate = (id: number, data: Partial<any>) => {
     setArtists((prev) =>
       prev.map((a) => (a.id === id ? { ...a, ...data } : a)),
     );
   };
+  
 
   useEffect(() => {
     if (!isModalOpen) fetchArtists();
