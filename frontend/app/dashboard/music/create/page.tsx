@@ -25,7 +25,7 @@ import {
 
 export default function CreateMusicModal() {
   const [open, setOpen] = useState(false);
-  const { showToast } = useState();
+  const { showToast } = useToast();
 
   const [artists] = useState([
     { id: 1, name: "Drake" },
