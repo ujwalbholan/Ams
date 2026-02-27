@@ -21,7 +21,7 @@ let ArtistsService = class ArtistsService {
         const offset = (page - 1) * limit;
         try {
             const data = await this.databaseService.query(`SELECT * FROM artists
-       WHERE id = $1
+       WHERE created_by = $1
        ORDER BY id DESC
        LIMIT $2 OFFSET $3`, [id, limit, offset]);
             const result = await this.databaseService.query(`SELECT COUNT(*) FROM artists
