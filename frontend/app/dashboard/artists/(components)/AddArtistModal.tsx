@@ -97,7 +97,7 @@ export default function AddArtistModal({
 
         <form className="grid grid-cols-1 gap-4" onSubmit={handleSubmit}>
           <div className="flex flex-col">
-            <Label>Name</Label>
+            <Label className="mb-3">Name</Label>
             <Input
               placeholder="Artist Name"
               value={form.name}
@@ -107,7 +107,7 @@ export default function AddArtistModal({
           </div>
 
           <div className="flex flex-col">
-            <Label>Date of Birth</Label>
+            <Label className="mb-3">Date of Debue</Label>
             <Input
               type="date"
               value={form.dob}
@@ -117,7 +117,7 @@ export default function AddArtistModal({
           </div>
 
           <div className="flex flex-col">
-            <Label>Gender</Label>
+            <Label className="mb-3">Gender</Label>
             <select
               className="w-full border rounded px-3 py-2"
               value={form.gender}
@@ -131,7 +131,7 @@ export default function AddArtistModal({
           </div>
 
           <div className="flex flex-col">
-            <Label>Address</Label>
+            <Label className="mb-3">Address</Label>
             <Input
               placeholder="Address"
               value={form.address}
@@ -140,7 +140,7 @@ export default function AddArtistModal({
           </div>
 
           <div className="flex flex-col">
-            <Label>First Release Year</Label>
+            <Label className="mb-3">First Release Year</Label>
             <Input
               type="number"
               placeholder="2008"
@@ -152,7 +152,7 @@ export default function AddArtistModal({
           </div>
 
           <div className="flex flex-col">
-            <Label>Number of Albums Released</Label>
+            <Label className="mb-3">Number of Albums Released</Label>
             <Input
               type="number"
               placeholder="20"
