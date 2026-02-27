@@ -31,10 +31,7 @@ $ npm run test:cov
 ```
 
 ## Deployment
-#Frontend is hosted in vecle 
-[Frontend live link](https://ams-ashen.vercel.app/)
 
-#Backend is hosted in render
 
 ## License
 
