@@ -68,7 +68,7 @@ export default function CreateMusicModal() {
       useToast({
         message: `${form.title} has been added successfully!`,
         type: "success",
-        action: { label: "Close", onClick: () => setOpen(false) },
+        title: ""
       });
 
       setForm({ artist_id: "", title: "", album_name: "", genre: "" });

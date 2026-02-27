@@ -4,7 +4,7 @@ import { AxiosError } from "axios";
 export interface ArtistPayload {
   name: string;
   dob: string;
-  gender: "m" | "f" ;
+  gender: "m" | "f";
   address: string;
   first_release_year: number;
   no_of_albums_released: number;
@@ -14,12 +14,19 @@ export interface Artist {
   id: number;
   name: string;
   dob: string;
-  gender: "m" | "f" ;
+  gender: "m" | "f";
   address: string;
   first_release_year: number;
   no_of_albums_released: number;
   created_at: string;
   updated_at: string;
+}
+
+export interface GetArtistsResponse {
+  data: Artist[];
+  total: number;
+  page: number;
+  limit: number;
 }
 
 interface ServiceError {
@@ -48,15 +55,11 @@ export const artistService = {
   },
 
   getArtists: async (
-    page: number = 1,
-    limit: number = 10,
-  ): Promise<{
-    data(data: any): unknown;
-    artists: Artist[];
-    total: number;
-  }> => {
+    page: number,
+    limit: number,
+  ): Promise<GetArtistsResponse> => {
     try {
-      const response = await api.get<{ artists: Artist[]; total: number }>(
+      const response = await api.get<GetArtistsResponse>(
         `/artist?page=${page}&limit=${limit}`,
       );
       return response.data;
