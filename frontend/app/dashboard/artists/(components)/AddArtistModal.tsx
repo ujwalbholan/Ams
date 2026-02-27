@@ -64,8 +64,8 @@ export default function AddArtistModal({
       });
       useToast({
         title: "Artist Created",
-        description: `${form.name} added successfully`,
-        variant: "success",
+        message: undefined,
+        type: "",
       });
       onOpenChange(false); // Close modal
       setForm({
@@ -79,8 +79,8 @@ export default function AddArtistModal({
     } catch (err: any) {
       useToast({
         title: "Failed to create artist",
-        description: err.message || "Something went wrong",
-        variant: "destructive",
+        message: undefined,
+        type: "",
       });
     } finally {
       setLoading(false);
@@ -121,7 +121,9 @@ export default function AddArtistModal({
             <select
               className="w-full border rounded px-3 py-2"
               value={form.gender}
-              onChange={(e) => handleChange("gender", e.target.value)}
+              onChange={(e) =>
+                handleChange("gender", e.target.value as "m" | "f")
+              }
             >
               <option value="m">Male</option>
               <option value="f">Female</option>
