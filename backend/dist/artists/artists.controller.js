@@ -44,8 +44,7 @@ let ArtistsController = class ArtistsController {
         return this.artistsService.updateArtist(Number(id), userId, updateArtistDto);
     }
     deleteArtist(id, req) {
-        const userId = req['user'].id;
-        console.log(userId);
+        const userId = req['user'].sub;
         return this.artistsService.deleteArtist(Number(id), userId);
     }
 };
