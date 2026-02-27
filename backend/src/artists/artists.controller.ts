@@ -62,8 +62,7 @@ export class ArtistsController {
 
   @Delete(':id')
   deleteArtist(@Param('id') id: number, @Req() req: Request) {
-    const userId = req['user'].id;
-    console.log(userId);
+    const userId = req['user'].sub;
     return this.artistsService.deleteArtist(Number(id), userId);
   }
 }
