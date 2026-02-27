@@ -48,12 +48,12 @@ export default function CreateMusicModal() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.artist_id) {
-      useToast({
-        message: "Please select an artist",
-        type: "error",
-        title: ""
-      });
-      return;
+      // useToast({
+      //   message: "Please select an artist",
+      //   type: "error",
+      //   title: ""
+      // });
+      // return;
     }
 
     setLoading(true);
