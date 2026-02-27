@@ -15,6 +15,15 @@ import {
 } from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/toast";
 
+type ArtistForm = {
+  name: string;
+  dob: string;
+  gender: "m" | "f";
+  address: string;
+  first_release_year: string;
+  no_of_albums_released: string;
+};
+
 interface AddArtistModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -25,7 +34,8 @@ export default function AddArtistModal({
   onOpenChange,
 }: AddArtistModalProps) {
   const [loading, setLoading] = useState(false);
-  const [form, setForm] = useState({
+
+  const [form, setForm] = useState<ArtistForm>({
     name: "",
     dob: "",
     gender: "m",
@@ -34,10 +44,12 @@ export default function AddArtistModal({
     no_of_albums_released: "",
   });
 
-  const handleChange = (field: string, value: string) => {
+  const handleChange = <K extends keyof ArtistForm>(
+    field: K,
+    value: ArtistForm[K],
+  ) => {
     setForm((prev) => ({ ...prev, [field]: value }));
   };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);

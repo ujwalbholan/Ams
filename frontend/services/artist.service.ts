@@ -41,7 +41,6 @@ export const artistService = {
   createArtist: async (data: ArtistPayload): Promise<Artist> => {
     try {
       const response = await api.post<Artist>("/artist", data);
-      console.log(response)
       return response.data;
     } catch (error: unknown) {
       throw handleAxiosError(error);
