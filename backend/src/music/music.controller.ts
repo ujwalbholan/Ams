@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import {
   Controller,
   Get,
@@ -7,7 +9,10 @@ import {
   Put,
   Delete,
   UseGuards,
+  Query,
+  Req,
 } from '@nestjs/common';
+import type { Request } from 'express';
 import { MusicService } from './music.service';
 import { CreateMusicDto } from './dto/create-music.dto';
 import { UpdateMusicDto } from './dto/update-music.dto';
@@ -23,9 +28,14 @@ export class MusicController {
     return this.musicService.createMusic(createMusicDto);
   }
 
-  @Get()
-  getAllMusic() {
-    return this.musicService.getAllMusic();
+  @Get('')
+  getAllMuisc(
+    @Query('page') page = 1,
+    @Query('limit') limit = 10,
+    @Req() req: Request,
+  ) {
+    const id = req['user'].sub;
+    return this.musicService.getAllMusic(id, Number(page), Number(limit));
   }
 
   @Get(':id')

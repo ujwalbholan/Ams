@@ -74,11 +74,9 @@ export default function MusicPage() {
     );
   };
 
-
-   useEffect(() => {
+  useEffect(() => {
     if (!isModalOpen) fetchMusic(page);
   }, [page, isModalOpen]);
-
 
   return (
     <div className="p-4 md:p-5">
@@ -87,15 +85,15 @@ export default function MusicPage() {
         <Button onClick={() => setIsModalOpen(true)}>Add Artist</Button>
       </div>
 
-         <AddMuiscModal
-              open={isModalOpen}
-              onOpenChange={(open) => {
-                setIsModalOpen(open);
-                if (!open) setSelectedMusic(null);
-              }}
-              musicToEdit={selectedMuisc}
-              onUpdate={handleUpdate}
-            />
+      <AddMuiscModal
+        open={isModalOpen}
+        onOpenChange={(open) => {
+          setIsModalOpen(open);
+          if (!open) setSelectedMusic(null);
+        }}
+        musicToEdit={selectedMuisc}
+        onUpdate={handleUpdate}
+      />
 
       <div className="overflow-x-auto">
         <Table>

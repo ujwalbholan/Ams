@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Music, musicService, MusicPayload } from "@/services/music.service";
+import { artistService, Artist } from "@/services/artist.service";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -28,6 +29,7 @@ export default function AddMuiscModal({
   onUpdate,
 }: AddMusicModalProps) {
   const [loading, setLoading] = useState(false);
+  const [artists, setArtists] = useState<Artist[]>([]);
 
   const [form, setForm] = useState<MusicPayload>({
     artist_id: 0,
@@ -36,6 +38,18 @@ export default function AddMuiscModal({
     genre: "rnb",
   });
   const { showToast } = useToast();
+
+  const fetchArtists = async () => {
+    try {
+      const res = await artistService.getArtists(1, 1000);
+      setArtists(res.data ?? []);
+    } catch (error) {
+      showToast({
+        message: "Failed to load artists",
+        type: "error",
+      });
+    }
+  };
 
   useEffect(() => {
     if (musicToEdit) {
@@ -52,6 +66,10 @@ export default function AddMuiscModal({
         album_name: "",
         genre: "rnb",
       });
+    }
+
+    if (open) {
+      fetchArtists();
     }
   }, [musicToEdit, open]);
 
@@ -98,6 +116,21 @@ export default function AddMuiscModal({
         </DialogHeader>
 
         <form className="grid grid-cols-1 gap-4" onSubmit={handleSubmit}>
+          <select
+            className="w-full border rounded px-3 py-2"
+            value={form.artist_id}
+            onChange={(e) => handleChange("artist_id", Number(e.target.value))}
+            required
+          >
+            <option value="">Select Artist</option>
+
+            {artists.map((artist) => (
+              <option key={artist.id} value={artist.id}>
+                {artist.name}
+              </option>
+            ))}
+          </select>
+
           <div className="flex flex-col">
             <Label className="mb-3">Title</Label>
             <Input

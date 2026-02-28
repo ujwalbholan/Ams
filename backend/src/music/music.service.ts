@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import {
   Injectable,
   NotFoundException,
@@ -44,12 +47,38 @@ export class MusicService {
     }
   }
 
-  async getAllMusic() {
+  async getAllMusic(id, page, limit) {
+    const offset = (page - 1) * limit;
     try {
-      const result = await this.databaseService.query(`SELECT * FROM music`);
-      return result;
-    } catch {
-      throw new InternalServerErrorException('Failed to fetch music');
+      const data = await this.databaseService.query(
+        `SELECT m.*
+        FROM music m
+        JOIN artists a ON m.artist_id = a.id
+        WHERE a.created_by = $1
+        ORDER BY m.id DESC
+        LIMIT $2 OFFSET $3`,
+        [id, limit, offset],
+      );
+
+      const result = await this.databaseService.query(
+        `SELECT COUNT(*) FROM artists
+       WHERE artist_id = $1`,
+        [id],
+      );
+
+      if (!result?.length) {
+        throw new NotFoundException('Muisc creation failed');
+      }
+
+      return {
+        total: Number(result[0].count),
+        page,
+        limit,
+        data,
+      };
+    } catch (error) {
+      if (error instanceof NotFoundException) throw error;
+      throw new InternalServerErrorException();
     }
   }
 
