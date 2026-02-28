@@ -633,34 +633,6 @@ The API uses standard HTTP status codes to indicate the outcome of requests.
   "error": "Not Found"
 }
 ```
-
----
-
-## Contributing
-
-Contributions are welcome! Please follow the steps below:
-
-1. **Fork** the repository.
-2. **Create** a new feature branch:
-   ```bash
-   git checkout -b feature/your-feature-name
-   ```
-3. **Commit** your changes with a clear message:
-   ```bash
-   git commit -m "feat: add your feature description"
-   ```
-4. **Push** to your branch:
-   ```bash
-   git push origin feature/your-feature-name
-   ```
-5. **Open a Pull Request** against the `main` branch and describe your changes.
-
-### Code Style
-
-- Follow existing naming conventions and folder structure.
-- Write clear, descriptive commit messages using [Conventional Commits](https://www.conventionalcommits.org/).
-- Ensure all endpoints are tested before submitting a PR.
-
 ---
 
 > **Note:** This API is intended for local development. For production deployments, ensure proper environment configuration, HTTPS, and security hardening.
