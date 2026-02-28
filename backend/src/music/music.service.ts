@@ -59,6 +59,7 @@ export class MusicService {
         LIMIT $2 OFFSET $3`,
         [id, limit, offset],
       );
+      console.log(data);
 
       const result = await this.databaseService.query(
         `SELECT COUNT(*) FROM artists
@@ -77,6 +78,7 @@ export class MusicService {
         data,
       };
     } catch (error) {
+      console.log(error);
       if (error instanceof NotFoundException) throw error;
       throw new InternalServerErrorException();
     }

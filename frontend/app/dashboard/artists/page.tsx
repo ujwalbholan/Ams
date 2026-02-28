@@ -25,6 +25,8 @@ export default function ArtistsPage() {
   const [total, setTotal] = useState(0);
   const { showToast } = useToast();
 
+  const totalpage = 6;
+
   const fetchArtists = async (pageNumber: number = 1) => {
     setLoading(true);
     try {
@@ -155,11 +157,11 @@ export default function ArtistsPage() {
             Previous
           </Button>
           <span>
-            Page {page} of {Math.max(1, Math.ceil(total / limit))}
+            Page {page} of {artists.length}
           </span>
           <Button
             onClick={() => setPage(page + 1)}
-            disabled={page >= Math.max(1, Math.ceil(total / limit))}
+            disabled={artists.length <= totalpage}
           >
             Next
           </Button>

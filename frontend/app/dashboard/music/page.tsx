@@ -26,6 +26,8 @@ export default function MusicPage() {
   const [total, setTotal] = useState(0);
   const { showToast } = useToast();
 
+  const totalpage = 6;
+
   const fetchMusic = async (pageNumber: number = 1) => {
     setLoading(true);
     try {
@@ -147,24 +149,17 @@ export default function MusicPage() {
         </Table>
 
         <div className="flex items-center justify-end mt-4 space-x-4">
-          <Button
-            onClick={() => setPage(page - 1)}
-            disabled={page <= 1 || musicList.length === 0}
-          >
+          <Button onClick={() => setPage(page - 1)} disabled={page <= 1}>
             Previous
           </Button>
 
           <span>
-            Page {musicList.length === 0 ? 0 : page} of{" "}
-            {Math.max(1, Math.ceil(total / limit))}
+            Page {page} of {musicList.length}
           </span>
 
           <Button
             onClick={() => setPage(page + 1)}
-            disabled={
-              musicList.length === 0 ||
-              page >= Math.max(1, Math.ceil(total / limit))
-            }
+            disabled={musicList.length <= totalpage}
           >
             Next
           </Button>

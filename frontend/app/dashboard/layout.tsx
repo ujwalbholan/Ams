@@ -59,7 +59,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
     { name: "Artists", href: "/dashboard/artists", icon: MicVocal },
     { name: "Musics", href: "/dashboard/music", icon: Music },
-    { name: "My Profile", href: "/dashboard/profile", icon: UserRound },
+    // { name: "My Profile", href: "/dashboard/profile", icon: UserRound },
   ];
 
   return (
