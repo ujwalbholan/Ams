@@ -2,9 +2,11 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import cookieParser from 'cookie-parser';
 import * as express from 'express';
+import { Request, Response, NextFunction } from 'express';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
   app.enableCors({
     origin: ['http://localhost:3000', 'https://ams-ashen.vercel.app'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
@@ -14,6 +16,19 @@ async function bootstrap() {
   app.use(cookieParser());
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
+
+  app.use((req: Request, res: Response, next: NextFunction) => {
+    if (req.method === 'OPTIONS') {
+      res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
+      res.header(
+        'Access-Control-Allow-Methods',
+        'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+      );
+      res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+      return res.sendStatus(200);
+    }
+    next();
+  });
 
   await app.listen(process.env.PORT ?? 3001);
 }
