@@ -41,7 +41,9 @@ const hendelAxiosError = (error: unknown): ServiceError => {
 export const authService = {
   login: async (data: LoginPayload): Promise<AuthResponse> => {
     try {
-      const response = await api.post<AuthResponse>("/auth/login", data);
+      const response = await api.post<AuthResponse>("/auth/login", data, {
+        withCredentials: true,
+      });
       return response.data;
     } catch (error) {
       throw hendelAxiosError(error);
@@ -49,7 +51,9 @@ export const authService = {
   },
   register: async (data: RegisterPayload): Promise<{ message: string }> => {
     try {
-      const response = await api.post("/auth/register", data);
+      const response = await api.post("/auth/register", data, {
+        withCredentials: true,
+      });
       return response.data;
     } catch (error) {
       throw hendelAxiosError(error);
