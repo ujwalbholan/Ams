@@ -1,9 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { musicService, Music } from "@/services/music.service";
 import {
   Table,
   TableBody,
@@ -12,115 +10,170 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Trash, Edit } from "lucide-react";
-import Link from "next/link";
-import { musicService } from "@/services/music.service";
-
-interface Music {
-  id: number;
-  title: string;
-  album_name: string;
-  genre: string;
-  artist_id: number;
-}
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/toast";
+import { Trash2, Edit } from "lucide-react";
+import AddMuiscModal from "./(components)/AddMusicMOdel";
 
 export default function MusicPage() {
   const [musicList, setMusicList] = useState<Music[]>([]);
-  const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedMuisc, setSelectedMusic] = useState<Music | null>(null);
 
-  const fetchMusic = async () => {
+  const [page, setPage] = useState(1);
+  const [limit] = useState(10);
+  const [total, setTotal] = useState(0);
+  const { showToast } = useToast();
+
+  const fetchMusic = async (pageNumber: number = 1) => {
+    setLoading(true);
     try {
-      setLoading(true);
-      const data = await musicService.getAllMusic();
-      setMusicList(data);
+      const res = await musicService.getAllMusic(pageNumber, limit);
+
+      setMusicList(res?.data ?? []);
+      setPage(res.page);
+      setTotal(res.total);
     } catch (err: any) {
-      console.error(err);
-      setError(err.message || "Failed to fetch music");
+      showToast({
+        message: err.message || "Something went wrong",
+        type: "error",
+      });
     } finally {
       setLoading(false);
     }
   };
 
   const handleDelete = async (id: number) => {
-    if (!confirm("Are you sure you want to delete this music?")) return;
+    const confirmed = confirm("Are you sure you want to delete this music?");
+    if (!confirmed) return;
 
     try {
       await musicService.deleteMusic(id);
       setMusicList((prev) => prev.filter((m) => m.id !== id));
+      showToast({
+        message: "Music has been removed successfully",
+        type: "success",
+      });
     } catch (err: any) {
-      console.error(err);
-      alert(err.message || "Failed to delete music");
+      showToast({
+        message: err.message || "Something went wrong",
+        type: "error",
+      });
     }
   };
 
-  useEffect(() => {
-    fetchMusic();
-  }, []);
+  const handleEdit = (music: Music) => {
+    setSelectedMusic(music);
+    setIsModalOpen(true);
+  };
 
-  const filteredMusic = musicList.filter(
-    (m) =>
-      m.title.toLowerCase().includes(search.toLowerCase()) ||
-      m.album_name.toLowerCase().includes(search.toLowerCase()) ||
-      m.genre.toLowerCase().includes(search.toLowerCase()),
-  );
+  const handleUpdate = (id: number, data: Partial<Music>) => {
+    setMusicList((prev) =>
+      prev.map((m) => (m.id === id ? { ...m, ...data } : m)),
+    );
+  };
 
-  if (loading) return <p>Loading music...</p>;
-  if (error) return <p className="text-red-500">{error}</p>;
+
+   useEffect(() => {
+    if (!isModalOpen) fetchMusic(page);
+  }, [page, isModalOpen]);
+
 
   return (
-    <div className="space-y-4">
-      <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold">Music Management</h1>
-        <Link href="/dashboard/music/create">
-          <Button>Add Music</Button>
-        </Link>
+    <div className="p-4 md:p-5">
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-2xl font-bold">Music</h1>
+        <Button onClick={() => setIsModalOpen(true)}>Add Artist</Button>
       </div>
 
-      <div className="w-1/2">
-        <Input
-          placeholder="Search by title, album, genre..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-      </div>
+         <AddMuiscModal
+              open={isModalOpen}
+              onOpenChange={(open) => {
+                setIsModalOpen(open);
+                if (!open) setSelectedMusic(null);
+              }}
+              musicToEdit={selectedMuisc}
+              onUpdate={handleUpdate}
+            />
 
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Title</TableHead>
-            <TableHead>Album</TableHead>
-            <TableHead>Genre</TableHead>
-            <TableHead>Artist ID</TableHead>
-            <TableHead>Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {filteredMusic.map((music) => (
-            <TableRow key={music.id}>
-              <TableCell>{music.title}</TableCell>
-              <TableCell>{music.album_name}</TableCell>
-              <TableCell>{music.genre}</TableCell>
-              <TableCell>{music.artist_id}</TableCell>
-              <TableCell className="flex gap-2">
-                <Link href={`/dashboard/music/${music.id}/edit`}>
-                  <Button variant="outline" size="sm">
-                    <Edit size={16} />
-                  </Button>
-                </Link>
-                <Button
-                  variant="destructive"
-                  size="sm"
-                  onClick={() => handleDelete(music.id)}
-                >
-                  <Trash size={16} />
-                </Button>
-              </TableCell>
+      <div className="overflow-x-auto">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Title</TableHead>
+              <TableHead>Album</TableHead>
+              <TableHead>Genre</TableHead>
+              <TableHead>Actions</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+
+          <TableBody>
+            {Array.isArray(musicList) && musicList.length > 0 ? (
+              musicList.map((music) => (
+                <TableRow key={music.id}>
+                  <TableCell>{music.title}</TableCell>
+                  <TableCell>{music.album_name}</TableCell>
+                  <TableCell>{music.genre}</TableCell>
+
+                  <TableCell>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleEdit(music)}
+                      className="mr-2"
+                    >
+                      <Edit size={20} />
+                    </Button>
+                    <Button
+                      variant="destructive"
+                      size="sm"
+                      onClick={() => handleDelete(music.id)}
+                    >
+                      <Trash2 size={16} />
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={5}
+                  className="text-center text-gray-500 py-6"
+                >
+                  No music found
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+
+        <div className="flex items-center justify-end mt-4 space-x-4">
+          <Button
+            onClick={() => setPage(page - 1)}
+            disabled={page <= 1 || musicList.length === 0}
+          >
+            Previous
+          </Button>
+
+          <span>
+            Page {musicList.length === 0 ? 0 : page} of{" "}
+            {Math.max(1, Math.ceil(total / limit))}
+          </span>
+
+          <Button
+            onClick={() => setPage(page + 1)}
+            disabled={
+              musicList.length === 0 ||
+              page >= Math.max(1, Math.ceil(total / limit))
+            }
+          >
+            Next
+          </Button>
+        </div>
+      </div>
+
+      {loading && <p className="mt-4 text-gray-500">Loading music...</p>}
     </div>
   );
 }

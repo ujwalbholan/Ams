@@ -23,6 +23,13 @@ interface ServiceError {
   status?: number;
 }
 
+export interface GetMusicResponse {
+  data: Music[];
+  page: number;
+  limit: number;
+  total: number;
+}
+
 const handleAxiosError = (error: unknown): ServiceError => {
   if (error instanceof AxiosError) {
     return {
@@ -43,9 +50,14 @@ export const musicService = {
     }
   },
 
-  getAllMusic: async (): Promise<Music[]> => {
+  getAllMusic: async (
+    page: number,
+    limit: number,
+  ): Promise<GetMusicResponse> => {
     try {
-      const response = await api.get<Music[]>("/music");
+      const response = await api.get<GetMusicResponse>(
+        `/music?page=${page}&limit=${limit}`,
+      );
       return response.data;
     } catch (error: unknown) {
       throw handleAxiosError(error);

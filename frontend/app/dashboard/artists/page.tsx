@@ -84,7 +84,6 @@ export default function ArtistsPage() {
         <Button onClick={() => setIsModalOpen(true)}>Add Artist</Button>
       </div>
 
-      {/* <AddArtistModal open={isModalOpen} onOpenChange={setIsModalOpen} /> */}
       <AddArtistModal
         open={isModalOpen}
         onOpenChange={(open) => {
@@ -109,33 +108,45 @@ export default function ArtistsPage() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {artists.map((artist) => (
-              <TableRow key={artist.id}>
-                <TableCell>{artist.name}</TableCell>
-                <TableCell>{artist.dob}</TableCell>
-                <TableCell>{artist.gender.toUpperCase()}</TableCell>
-                <TableCell>{artist.address}</TableCell>
-                <TableCell>{artist.first_release_year}</TableCell>
-                <TableCell>{artist.no_of_albums_released}</TableCell>
-                <TableCell>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleEdit(artist)}
-                    className="mr-2"
-                  >
-                    <Edit size={20} />
-                  </Button>
-                  <Button
-                    variant="destructive"
-                    size="sm"
-                    onClick={() => handleDelete(artist.id)}
-                  >
-                    <Trash2 size={16} />
-                  </Button>
+            {Array.isArray(artists) && artists.length > 0 ? (
+              artists.map((artist) => (
+                <TableRow key={artist.id}>
+                  <TableCell>{artist.name}</TableCell>
+                  <TableCell>{artist.dob}</TableCell>
+                  <TableCell>{artist.gender.toUpperCase()}</TableCell>
+                  <TableCell>{artist.address}</TableCell>
+                  <TableCell>{artist.first_release_year}</TableCell>
+                  <TableCell>{artist.no_of_albums_released}</TableCell>
+                  <TableCell>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleEdit(artist)}
+                      className="mr-2"
+                    >
+                      <Edit size={20} />
+                    </Button>
+
+                    <Button
+                      variant="destructive"
+                      size="sm"
+                      onClick={() => handleDelete(artist.id)}
+                    >
+                      <Trash2 size={16} />
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={7}
+                  className="text-center text-gray-500 py-6"
+                >
+                  No artists found
                 </TableCell>
               </TableRow>
-            ))}
+            )}
           </TableBody>
         </Table>
 
