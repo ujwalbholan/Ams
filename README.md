@@ -1,6 +1,7 @@
 # AMS — Artist Management System
 
 ## Overview
+
 AMS is a full-stack application for managing artists, their albums, and related information.  
 The project follows **modern coding best practices**, including reusable components, separation of concerns, and secure token-based routing.  
 It also includes a simple **CI/CD pipeline** for automated builds and deployments.
@@ -9,22 +10,22 @@ It also includes a simple **CI/CD pipeline** for automated builds and deployment
 
 ## Features
 
-- **Artist Management**: Add, edit, delete, and view artist details.  
-- **Protected Routes**: Token-based authentication for secure access.  
-- **Reusable Components**: Frontend built with modular components for easy scalability.  
-- **Backend API**: RESTful API for managing artist data with proper CRUD operations.  
-- **Pagination**: Efficient backend pagination for handling large datasets.  
-- **Simple CI/CD**: Automated build and deployment pipeline.  
+- **Artist Management**: Add, edit, delete, and view artist details.
+- **Protected Routes**: Token-based authentication for secure access.
+- **Reusable Components**: Frontend built with modular components for easy scalability.
+- **Backend API**: RESTful API for managing artist data with proper CRUD operations.
+- **Pagination**: Efficient backend pagination for handling large datasets.
+- **Simple CI/CD**: Automated build and deployment pipeline.
 - **Error Handling & Notifications**: Clear feedback using toast messages.
 
 ---
 
 ## Tech Stack
 
-- **Frontend**: Next.js, React, TypeScript, TailwindCSS  
-- **Backend**: Node.js,Nest js, TypeScript  
-- **Database**: PostgreSQL(Neon Db- Cloud) (replace with your database)  
-- **Authentication**: JWT-based token authentication  
+- **Frontend**: Next.js, React, TypeScript, TailwindCSS
+- **Backend**: Node.js,Nest js, TypeScript
+- **Database**: PostgreSQL(Neon Db- Cloud) (replace with your database)
+- **Authentication**: JWT-based token authentication
 - **CI/CD**: GitHub Actions / Vercel Deployment(frontend) / Render(fro backend)
 
 ---
@@ -34,11 +35,13 @@ The frontend is hosted in Vercel. The project link: [AMS](https://ams-ashen.verc
 you can colne and run the project locally it will work.
 
 # frontend
+
 The frontend for the AMS is build on next js
 
 ### Installation
 
 1. **Clone the repository:**
+
    ```bash
    git clone https://github.com/ujwalbholan/Ams.git
    cd ams
@@ -46,6 +49,7 @@ The frontend for the AMS is build on next js
    ```
 
 2. **Install dependencies:**
+
    ```bash
    npm install
    ```
@@ -53,12 +57,14 @@ The frontend for the AMS is build on next js
 3. **Configure environment variables:**
 
    Create a `.env` file in the root directory:
+
    ```env
    PORT=3000
    NEXT_PUBLIC_API_URL='http://localhost:3000'
    ```
 
 4. **Start the server:**
+
    ```bash
    npm run start | npm run dev
    ```
@@ -113,6 +119,7 @@ Follow the steps below to get the AMS API running locally on your machine.
 ### Installation
 
 1. **Clone the repository:**
+
    ```bash
    git clone https://github.com/ujwalbholan/Ams.git
    cd ams
@@ -120,6 +127,7 @@ Follow the steps below to get the AMS API running locally on your machine.
    ```
 
 2. **Install dependencies:**
+
    ```bash
    npm install
    ```
@@ -127,6 +135,7 @@ Follow the steps below to get the AMS API running locally on your machine.
 3. **Configure environment variables:**
 
    Create a `.env` file in the root directory:
+
    ```env
    PORT=3001
    DATABASE_URL=your_database_connection_string
@@ -134,7 +143,8 @@ Follow the steps below to get the AMS API running locally on your machine.
    JWT_REFRESH_SECRET=your_jwt_refresh_key
    ```
 
-5. **Start the server:**
+4. **Start the server:**
+
    ```bash
    nest start --watch
    ```
@@ -169,30 +179,26 @@ Authorization: Bearer <your_token>
 
 Creates a new user account.
 
-| Property    | Value                  |
-|-------------|------------------------|
-| **Method**  | `POST`                 |
-| **URL**     | `/auth/register`       |
-| **Auth**    | Not required           |
+| Property   | Value            |
+| ---------- | ---------------- |
+| **Method** | `POST`           |
+| **URL**    | `/auth/register` |
+| **Auth**   | Not required     |
 
 **Request Body:**
+
 ```json
 {
-  "username": "johndoe",
   "email": "johndoe@example.com",
   "password": "securePassword123"
 }
 ```
 
 **Response — `201 Created`:**
+
 ```json
 {
-  "message": "User registered successfully",
-  "user": {
-    "id": 1,
-    "username": "johndoe",
-    "email": "johndoe@example.com"
-  }
+  "message": "User registered successfully"
 }
 ```
 
@@ -202,13 +208,14 @@ Creates a new user account.
 
 Authenticates a user and returns a JWT token.
 
-| Property    | Value                  |
-|-------------|------------------------|
-| **Method**  | `POST`                 |
-| **URL**     | `/auth/login`          |
-| **Auth**    | Not required           |
+| Property   | Value         |
+| ---------- | ------------- |
+| **Method** | `POST`        |
+| **URL**    | `/auth/login` |
+| **Auth**   | Not required  |
 
 **Request Body:**
+
 ```json
 {
   "email": "johndoe@example.com",
@@ -217,10 +224,16 @@ Authenticates a user and returns a JWT token.
 ```
 
 **Response — `200 OK`:**
+
 ```json
 {
   "message": "Login successful",
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  "email": "johndoe@example.com",
+
+  "token": {
+    "accessToken": "accessToken",
+    "refreshToken": "refreshToken"
+  }
 }
 ```
 
@@ -232,32 +245,37 @@ Authenticates a user and returns a JWT token.
 
 Creates a new artist profile.
 
-| Property    | Value                  |
-|-------------|------------------------|
-| **Method**  | `POST`                 |
-| **URL**     | `/artist`              |
-| **Auth**    | Bearer Token required  |
+| Property   | Value                 |
+| ---------- | --------------------- |
+| **Method** | `POST`                |
+| **URL**    | `/artist`             |
+| **Auth**   | Bearer Token required |
 
 **Request Body:**
+
 ```json
 {
-  "name": "John Doe",
-  "genre": "Pop",
-  "bio": "An award-winning pop artist from New York.",
-  "country": "USA"
+  "name": "pink",
+  "dob": "1988-05-05",
+  "gender": "m",
+  "address": "ENgland",
+  "first_release_year": 2008,
+  "no_of_albums_released": 20
 }
 ```
 
 **Response — `201 Created`:**
+
 ```json
 {
   "message": "Artist created successfully",
   "artist": {
-    "id": 42,
-    "name": "John Doe",
-    "genre": "Pop",
-    "bio": "An award-winning pop artist from New York.",
-    "country": "USA"
+    "name": "pink",
+    "DoD": "1988-05-05",
+    "gender": "m",
+    "address": "ENgland",
+    "first_release_year": 2008,
+    "no_of_albums_released": 20
   }
 }
 ```
@@ -268,25 +286,27 @@ Creates a new artist profile.
 
 Returns a paginated list of all artists.
 
-| Property    | Value                        |
-|-------------|------------------------------|
-| **Method**  | `GET`                        |
-| **URL**     | `/artist`                    |
-| **Auth**    | Bearer Token required        |
+| Property   | Value                 |
+| ---------- | --------------------- |
+| **Method** | `GET`                 |
+| **URL**    | `/artist`             |
+| **Auth**   | Bearer Token required |
 
 **Query Parameters:**
 
-| Parameter | Type    | Required | Description                        |
-|-----------|---------|----------|------------------------------------|
-| `page`    | integer | No       | Page number (default: `1`)         |
+| Parameter | Type    | Required | Description                               |
+| --------- | ------- | -------- | ----------------------------------------- |
+| `page`    | integer | No       | Page number (default: `1`)                |
 | `limit`   | integer | No       | Number of results per page (default: `5`) |
 
 **Example Request:**
+
 ```
 GET /artist?page=1&limit=5
 ```
 
 **Response — `200 OK`:**
+
 ```json
 {
   "total": 50,
@@ -315,31 +335,35 @@ GET /artist?page=1&limit=5
 
 Retrieves a single artist by their ID.
 
-| Property    | Value                        |
-|-------------|------------------------------|
-| **Method**  | `GET`                        |
-| **URL**     | `/artist/:id`                |
-| **Auth**    | Bearer Token required        |
+| Property   | Value                 |
+| ---------- | --------------------- |
+| **Method** | `GET`                 |
+| **URL**    | `/artist/:id`         |
+| **Auth**   | Bearer Token required |
 
 **Path Parameters:**
 
 | Parameter | Type    | Required | Description     |
-|-----------|---------|----------|-----------------|
+| --------- | ------- | -------- | --------------- |
 | `id`      | integer | Yes      | The artist's ID |
 
 **Example Request:**
+
 ```
 GET /artist/42
 ```
 
 **Response — `200 OK`:**
+
 ```json
 {
   "id": 42,
-  "name": "John Doe",
-  "genre": "Pop",
-  "bio": "An award-winning pop artist from New York.",
-  "country": "USA"
+  "name": "pink",
+  "dob": "1988-05-05",
+  "gender": "m",
+  "address": "ENgland",
+  "first_release_year": 2008,
+  "no_of_albums_released": 20
 }
 ```
 
@@ -349,38 +373,43 @@ GET /artist/42
 
 Updates an existing artist's information.
 
-| Property    | Value                        |
-|-------------|------------------------------|
-| **Method**  | `PUT`                        |
-| **URL**     | `/artist/:id`                |
-| **Auth**    | Bearer Token required        |
+| Property   | Value                 |
+| ---------- | --------------------- |
+| **Method** | `PUT`                 |
+| **URL**    | `/artist/:id`         |
+| **Auth**   | Bearer Token required |
 
 **Path Parameters:**
 
 | Parameter | Type    | Required | Description     |
-|-----------|---------|----------|-----------------|
+| --------- | ------- | -------- | --------------- |
 | `id`      | integer | Yes      | The artist's ID |
 
 **Request Body:**
+
 ```json
 {
-  "name": "John Doe Updated",
-  "genre": "R&B",
-  "bio": "Updated bio for John Doe.",
-  "country": "Canada"
+  "name": "pink pop",
+  "dob": "1988-05-05",
+  "gender": "m",
+  "address": "ENgland",
+  "first_release_year": 2008,
+  "no_of_albums_released": 20
 }
 ```
 
 **Response — `200 OK`:**
+
 ```json
 {
   "message": "Artist updated successfully",
   "artist": {
-    "id": 42,
-    "name": "John Doe Updated",
-    "genre": "R&B",
-    "bio": "Updated bio for John Doe.",
-    "country": "Canada"
+    "name": "pink pop",
+    "dob": "1988-05-05",
+    "gender": "m",
+    "address": "ENgland",
+    "first_release_year": 2008,
+    "no_of_albums_released": 20
   }
 }
 ```
@@ -391,24 +420,26 @@ Updates an existing artist's information.
 
 Deletes an artist by their ID.
 
-| Property    | Value                        |
-|-------------|------------------------------|
-| **Method**  | `DELETE`                     |
-| **URL**     | `/artist/:id`                |
-| **Auth**    | Bearer Token required        |
+| Property   | Value                 |
+| ---------- | --------------------- |
+| **Method** | `DELETE`              |
+| **URL**    | `/artist/:id`         |
+| **Auth**   | Bearer Token required |
 
 **Path Parameters:**
 
 | Parameter | Type    | Required | Description     |
-|-----------|---------|----------|-----------------|
+| --------- | ------- | -------- | --------------- |
 | `id`      | integer | Yes      | The artist's ID |
 
 **Example Request:**
+
 ```
 DELETE /artist/81
 ```
 
 **Response — `200 OK`:**
+
 ```json
 {
   "message": "Artist deleted successfully"
@@ -423,36 +454,34 @@ DELETE /artist/81
 
 Adds a new music record to the catalog.
 
-| Property    | Value                        |
-|-------------|------------------------------|
-| **Method**  | `POST`                       |
-| **URL**     | `/music`                     |
-| **Auth**    | Bearer Token required        |
+| Property   | Value                 |
+| ---------- | --------------------- |
+| **Method** | `POST`                |
+| **URL**    | `/music`              |
+| **Auth**   | Bearer Token required |
 
 **Request Body:**
+
 ```json
 {
-  "title": "Summer Vibes",
-  "artistId": 42,
-  "album": "Sunshine Collection",
-  "genre": "Pop",
-  "duration": 210,
-  "releaseYear": 2024
+  "artist_id": 54,
+  "title": "Rolling in the Deep",
+  "album_name": "21",
+  "genre": "rock"
 }
 ```
 
 **Response — `201 Created`:**
+
 ```json
 {
   "message": "Music created successfully",
   "music": {
-    "id": 61,
-    "title": "Summer Vibes",
-    "artistId": 42,
-    "album": "Sunshine Collection",
-    "genre": "Pop",
-    "duration": 210,
-    "releaseYear": 2024
+    "id": 60,
+    "artist_id": 54,
+    "title": "Rolling in the Deep",
+    "album_name": "21",
+    "genre": "rock"
   }
 }
 ```
@@ -463,25 +492,27 @@ Adds a new music record to the catalog.
 
 Returns a paginated list of all music records.
 
-| Property    | Value                        |
-|-------------|------------------------------|
-| **Method**  | `GET`                        |
-| **URL**     | `/music`                     |
-| **Auth**    | Bearer Token required        |
+| Property   | Value                 |
+| ---------- | --------------------- |
+| **Method** | `GET`                 |
+| **URL**    | `/music`              |
+| **Auth**   | Bearer Token required |
 
 **Query Parameters:**
 
-| Parameter | Type    | Required | Description                         |
-|-----------|---------|----------|-------------------------------------|
-| `page`    | integer | No       | Page number (default: `1`)          |
+| Parameter | Type    | Required | Description                                |
+| --------- | ------- | -------- | ------------------------------------------ |
+| `page`    | integer | No       | Page number (default: `1`)                 |
 | `limit`   | integer | No       | Number of results per page (default: `10`) |
 
 **Example Request:**
+
 ```
 GET /music?page=1&limit=10
 ```
 
 **Response — `200 OK`:**
+
 ```json
 {
   "total": 120,
@@ -495,6 +526,7 @@ GET /music?page=1&limit=10
       "genre": "Pop",
       "releaseYear": 2024
     }
+    ......
   ]
 }
 ```
@@ -505,33 +537,33 @@ GET /music?page=1&limit=10
 
 Retrieves a single music record by its ID.
 
-| Property    | Value                        |
-|-------------|------------------------------|
-| **Method**  | `GET`                        |
-| **URL**     | `/music`                     |
-| **Auth**    | Bearer Token required        |
+| Property   | Value                 |
+| ---------- | --------------------- |
+| **Method** | `GET`                 |
+| **URL**    | `/music`              |
+| **Auth**   | Bearer Token required |
 
 **Query Parameters:**
 
 | Parameter | Type    | Required | Description    |
-|-----------|---------|----------|----------------|
+| --------- | ------- | -------- | -------------- |
 | `id`      | integer | Yes      | The music's ID |
 
 **Example Request:**
+
 ```
 GET /music?id=61
 ```
 
 **Response — `200 OK`:**
+
 ```json
 {
-  "id": 61,
-  "title": "Summer Vibes",
-  "artistId": 42,
-  "album": "Sunshine Collection",
-  "genre": "Pop",
-  "duration": 210,
-  "releaseYear": 2024
+  "Id": 61,
+  "artist_id": 54,
+  "title": "Rolling in the Deep",
+  "album_name": "21",
+  "genre": "rock"
 }
 ```
 
@@ -541,39 +573,39 @@ GET /music?id=61
 
 Updates an existing music record.
 
-| Property    | Value                        |
-|-------------|------------------------------|
-| **Method**  | `PUT`                        |
-| **URL**     | `/music/:id`                 |
-| **Auth**    | Bearer Token required        |
+| Property   | Value                 |
+| ---------- | --------------------- |
+| **Method** | `PUT`                 |
+| **URL**    | `/music/:id`          |
+| **Auth**   | Bearer Token required |
 
 **Path Parameters:**
 
 | Parameter | Type    | Required | Description    |
-|-----------|---------|----------|----------------|
+| --------- | ------- | -------- | -------------- |
 | `id`      | integer | Yes      | The music's ID |
 
 **Request Body:**
+
 ```json
 {
-  "title": "Summer Vibes (Remix)",
-  "album": "Sunshine Collection Deluxe",
-  "genre": "Dance Pop",
-  "duration": 225
+  "artist_id": 54,
+  "title": "Rolling in the Deep by adel",
+  "album_name": "21",
+  "genre": "rock"
 }
 ```
 
 **Response — `200 OK`:**
+
 ```json
 {
   "message": "Music updated successfully",
   "music": {
-    "id": 61,
-    "title": "Summer Vibes (Remix)",
-    "album": "Sunshine Collection Deluxe",
-    "genre": "Dance Pop",
-    "duration": 225,
-    "releaseYear": 2024
+    "artist_id": 54,
+    "title": "Rolling in the Deep by adel",
+    "album_name": "21",
+    "genre": "rock"
   }
 }
 ```
@@ -584,24 +616,26 @@ Updates an existing music record.
 
 Deletes a music record by its ID.
 
-| Property    | Value                        |
-|-------------|------------------------------|
-| **Method**  | `DELETE`                     |
-| **URL**     | `/music/:id`                 |
-| **Auth**    | Bearer Token required        |
+| Property   | Value                 |
+| ---------- | --------------------- |
+| **Method** | `DELETE`              |
+| **URL**    | `/music/:id`          |
+| **Auth**   | Bearer Token required |
 
 **Path Parameters:**
 
 | Parameter | Type    | Required | Description    |
-|-----------|---------|----------|----------------|
+| --------- | ------- | -------- | -------------- |
 | `id`      | integer | Yes      | The music's ID |
 
 **Example Request:**
+
 ```
 DELETE /music/61
 ```
 
 **Response — `200 OK`:**
+
 ```json
 {
   "message": "Music deleted successfully"
@@ -614,18 +648,19 @@ DELETE /music/61
 
 The API uses standard HTTP status codes to indicate the outcome of requests.
 
-| Status Code | Meaning               | Description                                                  |
-|-------------|-----------------------|--------------------------------------------------------------|
-| `200`       | OK                    | Request was successful.                                      |
-| `201`       | Created               | Resource was successfully created.                           |
-| `400`       | Bad Request           | The request was malformed or missing required fields.        |
-| `401`       | Unauthorized          | Authentication token is missing or invalid.                  |
-| `403`       | Forbidden             | You do not have permission to access this resource.          |
-| `404`       | Not Found             | The requested resource does not exist.                       |
-| `409`       | Conflict              | A resource with the same unique identifier already exists.   |
-| `500`       | Internal Server Error | An unexpected error occurred on the server.                  |
+| Status Code | Meaning               | Description                                                |
+| ----------- | --------------------- | ---------------------------------------------------------- |
+| `200`       | OK                    | Request was successful.                                    |
+| `201`       | Created               | Resource was successfully created.                         |
+| `400`       | Bad Request           | The request was malformed or missing required fields.      |
+| `401`       | Unauthorized          | Authentication token is missing or invalid.                |
+| `403`       | Forbidden             | You do not have permission to access this resource.        |
+| `404`       | Not Found             | The requested resource does not exist.                     |
+| `409`       | Conflict              | A resource with the same unique identifier already exists. |
+| `500`       | Internal Server Error | An unexpected error occurred on the server.                |
 
 **Error Response Format:**
+
 ```json
 {
   "statusCode": 404,
@@ -633,6 +668,7 @@ The API uses standard HTTP status codes to indicate the outcome of requests.
   "error": "Not Found"
 }
 ```
+
 ---
 
 > **Note:** This API is intended for local development. For production deployments, ensure proper environment configuration, HTTPS, and security hardening.
